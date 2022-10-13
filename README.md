@@ -11,3 +11,9 @@ Slack の有料版では、標準で似た機能を利用できます。
 3. デフォルトでは`コード.gs`が開いていると思います。このファイルの中身を全て削除し、本リポジトリの`script.js`の中身に書き換えます。このとき、変数`event_label`と`webhook_url`は適宜変更します。
 4. `コード.gs`を保存し、トリガーを設定します。
 5. Gmail の設定を開き、転送したいメールに`event_label`と同名のラベルと「`Slack`」という名前のラベルの 2 つを付与するように設定します。
+
+## Incoming Webhook の URL の取得方法
+1. [Slack App の管理画面](https://api.slack.com/apps/)から「**Create New App**」→「**From Scratch**」を順にクリックし、任意の App Name とワークスペースを指定します。「**Create App**」をクリックします。
+2. 「**Incoming Webhooks**」をクリックし、これを *On* にします。
+3. 「**Add New Webhook to Workspace**」をクリックし、投稿先のチャンネルを指定します。
+4. 「**Webhook URL**」をコピーして、使用します。
