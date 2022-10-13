@@ -20,12 +20,10 @@ function main() {
     });
 }
 
-const emailRe = new RegExp(
-    "[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*.)+[a-zA-Z]{2,}"
-);
-const nameRe = new RegExp('"[^"]*"');
-
 function emailOf(s) {
+    const emailRe = new RegExp(
+        "[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*.)+[a-zA-Z]{2,}"
+    );
     const m = s.match(emailRe);
     if (m) {
         // m != null
