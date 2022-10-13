@@ -60,7 +60,7 @@ function send_to_slack(message) {
             {
                 type: "section",
                 text: {
-                    type: "mrkdwn",
+                    type: "plain_text",
                     text: `${from_name} (${from_email})`,
                 },
             },
