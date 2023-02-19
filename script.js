@@ -1,16 +1,16 @@
-const event_label = "追い風ツアー";
-// Slackに転送したいメールには、「Slack」と上のevent_labelの2つのラベルを自動で付与するようGmailで設定しておく
-const webhook_url =
+const EVENT_LABEL = "追い風ツアー";
+// Slackに転送したいメールには、「Slack」と上のEVENT_LABELの2つのラベルを自動で付与するようGmailで設定しておく
+const WEBHOOK_URL =
     "https://hooks.slack.com/services/XXXXXXXXXXX/XXXXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX";
 // Incoming WebhookのURLを入力
 
 function main() {
-    const search_query = `label:${event_label} label:Slack`;
+    const search_query = `label:${EVENT_LABEL} label:Slack`;
     const threads = GmailApp.search(search_query, 0, 100);
 
     threads.forEach((thread) => {
         thread.getMessages().forEach((message) => {
-            send_to_slack(message);
+            sendToSlack(message);
         });
         const slack_label = GmailApp.getUserLabelByName("Slack");
         GmailApp.createLabel("Slack送信済み");
@@ -42,7 +42,7 @@ function nameOf(s) {
     return m;
 }
 
-function send_to_slack(message) {
+function sendToSlack(message) {
     const headers = { "Content-type": "application/json" };
     const from_name = nameOf(message.getFrom());
     const from_email = emailOf(message.getFrom());
@@ -100,5 +100,5 @@ function send_to_slack(message) {
         payload: JSON.stringify(data),
         muteHttpExceptions: true,
     };
-    UrlFetchApp.fetch(webhook_url, options);
+    UrlFetchApp.fetch(WEBHOOK_URL, options);
 }
