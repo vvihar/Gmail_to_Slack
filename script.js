@@ -1,22 +1,20 @@
 const EVENT_LABEL = "追い風ツアー";
-// Slackに転送したいメールには、「Slack」と上のEVENT_LABELの2つのラベルを自動で付与するようGmailで設定しておく
+// Slackに転送したいメールには、上のEVENT_LABELを自動で付与するようGmailで設定しておく
 const WEBHOOK_URL =
     "https://hooks.slack.com/services/XXXXXXXXXXX/XXXXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX";
 // Incoming WebhookのURLを入力
 
 function main() {
-    const search_query = `label:${EVENT_LABEL} label:Slack`;
-    const threads = GmailApp.search(search_query, 0, 100);
+    const searchQuery = `label:${EVENT_LABEL} -label:Slack送信済み`;
+    const threads = GmailApp.search(searchQuery, 0, 100);
 
     threads.forEach((thread) => {
         thread.getMessages().forEach((message) => {
             sendToSlack(message);
         });
-        const slack_label = GmailApp.getUserLabelByName("Slack");
         GmailApp.createLabel("Slack送信済み");
-        const slack_done_label = GmailApp.getUserLabelByName("Slack送信済み");
-        slack_label.removeFromThread(thread);
-        slack_done_label.addToThread(thread);
+        const slackDoneLabel = GmailApp.getUserLabelByName("Slack送信済み");
+        slackDoneLabel.addToThread(thread);
     });
 }
 
@@ -44,9 +42,9 @@ function nameOf(s) {
 
 function sendToSlack(message) {
     const headers = { "Content-type": "application/json" };
-    const from_name = nameOf(message.getFrom());
-    const from_email = emailOf(message.getFrom());
-    const has_attachments = message.getAttachments().length > 0;
+    const fromName = nameOf(message.getFrom());
+    const fromEmail = emailOf(message.getFrom());
+    const hasAttachments = message.getAttachments().length > 0;
     const data = {
         blocks: [
             {
@@ -61,7 +59,7 @@ function sendToSlack(message) {
                 type: "section",
                 text: {
                     type: "plain_text",
-                    text: `${from_name} (${from_email})`,
+                    text: `${fromName} (${fromEmail})`,
                 },
             },
             {
@@ -80,7 +78,7 @@ function sendToSlack(message) {
             },
         ],
     };
-    if (has_attachments) {
+    if (hasAttachments) {
         data.blocks.push(
             {
                 type: "divider",
